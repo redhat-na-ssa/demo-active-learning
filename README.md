@@ -4,6 +4,12 @@ This is active learning demo using Label Studio and LabelStudio ML backend. This
 
 ## References
 
+### Requirements
+
+Tested with:
+- Python 3.8
+- Fedora 38
+
 ### Training Data From Kaggle
   
 https://www.kaggle.com/datasets/misrakahmed/vegetable-image-dataset/download?datasetVersionNumber=1

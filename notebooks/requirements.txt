@@ -7,3 +7,4 @@ seaborn
 matplotlib
 scikit-learn
 kaggle
+# intel-extension-for-tensorflow
