@@ -4,4 +4,5 @@ kind: Kustomization
 namespace: demo-active-learn
 
 resources:
+- datasci-project
 - minio
