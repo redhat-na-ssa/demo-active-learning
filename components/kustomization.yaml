@@ -6,3 +6,4 @@ namespace: demo-active-learn
 resources:
 - datasci-project
 - minio
+- notebook
