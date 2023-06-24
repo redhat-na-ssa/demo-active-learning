@@ -47,8 +47,8 @@ services:
     links:
       - redis
     volumes:
-      - "./scratch:/dataset"
-      - "./scratch/data/server:/data"
+      - "./scratch:/dataset:z"
+      - "./scratch/data/server:/data:z"
 
 volumes:
   label-studio:
