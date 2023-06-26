@@ -1,6 +1,9 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
+namespace: demo-active-learn
+
 resources:
-- demo
-- rhods-operator/operator/overlays/stable
+- datasci-project
+- minio
+# - notebook
