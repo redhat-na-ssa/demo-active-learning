@@ -1,18 +1,18 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: serving
+  name: labeling
   annotations:
     alpha.image.policy.openshift.io/resolve-names: '*'
     app.openshift.io/route-disabled: "false"
     app.openshift.io/vcs-ref: openshift
     app.openshift.io/vcs-uri: https://github.com/redhat-na-ssa/demo-active-learning.git
-    image.openshift.io/triggers: '[{"from":{"kind":"ImageStreamTag","name":"serving:latest","namespace":"demo-active-learn"},"fieldPath":"spec.template.spec.containers[?(@.name==\"serving\")].image","pause":"false"}]'
+    image.openshift.io/triggers: '[{"from":{"kind":"ImageStreamTag","name":"labeling:latest","namespace":"demo-active-learn"},"fieldPath":"spec.template.spec.containers[?(@.name==\"labeling\")].image","pause":"false"}]'
   labels:
-    app: serving
-    app.kubernetes.io/component: serving
-    app.kubernetes.io/instance: serving
-    app.kubernetes.io/name: serving
+    app: labeling
+    app.kubernetes.io/component: labeling
+    app.kubernetes.io/instance: labeling
+    app.kubernetes.io/name: labeling
     app.kubernetes.io/part-of: active-learning
     app.openshift.io/runtime: python
     app.openshift.io/runtime-version: 3.9-ubi8
@@ -20,18 +20,18 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      app: serving
+      app: labeling
   strategy:
     type: RollingUpdate
   template:
     metadata:
       labels:
-        app: serving
-        deployment: serving
+        app: labeling
+        deployment: labeling
     spec:
       containers:
-      - image: image-registry.openshift-image-registry.svc:5000/demo-active-learn/serving:latest
-        name: serving
+      - image: image-registry.openshift-image-registry.svc:5000/demo-active-learn/labeling:latest
+        name: labeling
         ports:
         - containerPort: 8080
           protocol: TCP
