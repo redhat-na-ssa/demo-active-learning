@@ -1,0 +1,46 @@
+apiVersion: build.openshift.io/v1
+kind: BuildConfig
+metadata:
+  name: serving
+  annotations:
+    app.openshift.io/vcs-ref: openshift
+    app.openshift.io/vcs-uri: https://github.com/redhat-na-ssa/demo-active-learning.git
+  labels:
+    app: serving
+    app.kubernetes.io/component: serving
+    app.kubernetes.io/instance: serving
+    app.kubernetes.io/name: serving
+    app.kubernetes.io/part-of: active-learning
+    app.openshift.io/runtime: python
+    app.openshift.io/runtime-version: 3.9-ubi8
+spec:
+  output:
+    to:
+      kind: ImageStreamTag
+      name: serving:latest
+  runPolicy: SerialLatestOnly
+  source:
+    contextDir: /serving
+    git:
+      ref: openshift
+      uri: https://github.com/redhat-na-ssa/demo-active-learning.git
+    type: Git
+  strategy:
+    sourceStrategy:
+      from:
+        kind: ImageStreamTag
+        name: python:3.9-ubi8
+        namespace: openshift
+    type: Source
+  triggers:
+  - generic:
+      secretReference:
+        name: serving-generic-webhook-secret
+    type: Generic
+  - github:
+      secretReference:
+        name: serving-github-webhook-secret
+    type: GitHub
+  - imageChange: {}
+    type: ImageChange
+  - type: ConfigChange
