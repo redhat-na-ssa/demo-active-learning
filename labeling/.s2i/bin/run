@@ -1,0 +1,28 @@
+#!/bin/bash
+set -e
+
+usage(){
+  "${STI_SCRIPTS_PATH}/usage"
+}
+
+# fallback with sleep to debug your code
+# oc rsh / podman exec -it .. /bin/sh
+run_sleep(){
+  echo "Ponder the universe with infinate sleep..."
+  sleep infinity
+}
+
+# run normal s2i scripts
+run_s2i_default(){
+  ${STI_SCRIPTS_PATH}/run
+}
+
+run_s2i_override(){
+  # kludge - could change entrypoint
+  exec label-studio
+}
+
+usage
+run_s2i_override
+run_s2i_default
+run_sleep
