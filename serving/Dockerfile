@@ -1,4 +1,4 @@
-FROM python:3.8-slim
+FROM docker.io/library/python:3.8-slim
 
 ENV PYTHONUNBUFFERED=True \
     PORT=9090
