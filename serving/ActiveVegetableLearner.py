@@ -22,47 +22,10 @@ class ActiveVegetableClassifier(LabelStudioMLBase):
         self.batch_size = batch_size
         self.epochs = epochs
 
-        self.parsed_label_config = {
-            "choice": {
-                "type": "Choices",
-                "to_name": ["image"],
-                "inputs": [{"type": "Image", "value": "image"}],
-                "labels": [
-                    "Bean",
-                    "Bitter_Gourd",
-                    "Bottle_Gourd",
-                    "Egg Plant",
-                    "Broccoli",
-                    "Cabbage",
-                    "Capsicum",
-                    "Carrot",
-                    "Cauliflower",
-                    "Cucumber",
-                    "Papaya",
-                    "Potato",
-                    "Pumpkin",
-                    "Radish",
-                    "Tomato",
-                ],
-                "labels_attrs": {
-                    "Bean": {"value": "Bean"},
-                    "Bitter_Gourd": {"value": "Bitter_Gourd"},
-                    "Bottle_Gourd": {"value": "Bottle_Gourd"},
-                    "Egg Plant": {"value": "Egg Plant"},
-                    "Broccoli": {"value": "Broccoli"},
-                    "Cabbage": {"value": "Cabbage"},
-                    "Capsicum": {"value": "Capsicum"},
-                    "Carrot": {"value": "Carrot"},
-                    "Cauliflower": {"value": "Cauliflower"},
-                    "Cucumber": {"value": "Cucumber"},
-                    "Papaya": {"value": "Papaya"},
-                    "Potato": {"value": "Potato"},
-                    "Pumpkin": {"value": "Pumpkin"},
-                    "Radish": {"value": "Radish"},
-                    "Tomato": {"value": "Tomato"},
-                },
-            }
-        }
+        from_name, schema = list(self.parsed_label_config.items())[0]
+        self.from_name = from_name
+        self.to_name = schema['to_name'][0]
+        self.labels = schema['labels']
 
         (
             self.from_name,
@@ -71,15 +34,16 @@ class ActiveVegetableClassifier(LabelStudioMLBase):
             self.labels_in_config,
         ) = get_single_tag_keys(self.parsed_label_config, "Choices", "Image")
 
-
+        print(self.labels_in_config)
         self.labels = tf.convert_to_tensor(sorted(self.labels_in_config))
 
         num_classes = len(self.labels_in_config)
+        self.model = self.load_model_from_local_file()
 
         self.category = {
             0: "Bean",
-            1: "Bitter Gourd",
-            2: "Bottle Gourd",
+            1: "Bitter_Gourd",
+            2: "Bottle_Gourd",
             3: "Brinjal",
             4: "Broccoli",
             5: "Cabbage",
@@ -118,8 +82,13 @@ class ActiveVegetableClassifier(LabelStudioMLBase):
 
         predictions = []
         # Get annotation tag first, and extract from_name/to_name keys from the labeling config to make predictions
+        
         for task in tasks:
-            image_path = get_image_local_path(task["data"]["image"])
+            print(task)
+            url=task["data"]["image"]
+            print(url)
+            image_dir=os.getenv("IMAGE_UPLOADED_DIR","/Users/arunhariharan/Library/Application Support/label-studio/media/upload")
+            image_path = get_image_local_path(url,None,None,image_dir)
             print(image_path)
             img_ = image.load_img(image_path, target_size=(224, 224))
             img_array = image.img_to_array(img_)
@@ -152,10 +121,9 @@ class ActiveVegetableClassifier(LabelStudioMLBase):
             print(f"Inside Training now")
             print(f"*******************")
             completion = kwargs
-
-            image_path = get_image_local_path(
-                completion["data"]["task"]["data"]["image"]
-            )
+            url=completion["data"]["task"]["data"]["image"]
+            image_dir=os.getenv("IMAGE_UPLOADED_DIR","/Users/arunhariharan/Library/Application Support/label-studio/media/upload")
+            image_path = get_image_local_path(url,None,None,image_dir)
             image_label = completion["data"]["annotation"]["result"][0]["value"][
                 "choices"
             ][0]
@@ -180,6 +148,7 @@ class ActiveVegetableClassifier(LabelStudioMLBase):
                 .batch(self.batch_size)
                 .prefetch(buffer_size=tf.data.AUTOTUNE)
             )
+            print(self.model)
             self.model.compile(
                 optimizer=tf.keras.optimizers.Adam(),
                 loss=tf.keras.losses.SparseCategoricalCrossentropy(),
