@@ -59,6 +59,10 @@ print_info(){
 }
 
 setup_demo(){
+  oc apply -k components
+}
+
+setup_demo(){
   check_cd
   check_venv
   install_requirements
