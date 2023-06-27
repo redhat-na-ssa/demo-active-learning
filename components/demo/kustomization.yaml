@@ -7,3 +7,5 @@ resources:
 - datasci-project
 - minio
 # - notebook
+- pipelines
+- serving

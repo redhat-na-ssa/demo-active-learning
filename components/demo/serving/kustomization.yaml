@@ -3,6 +3,7 @@ kind: Kustomization
 
 resources:
 - bc.yaml
+- deploy.yaml
 - is.yaml
 - route.yaml
 - svc.yaml
