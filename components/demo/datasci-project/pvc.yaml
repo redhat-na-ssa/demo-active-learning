@@ -6,7 +6,7 @@ metadata:
     openshift.io/display-name: Active Learning Demo
   labels:
     opendatahub.io/dashboard: "true"
-  name: active-learning-demo
+  name: demo-active-learn
 spec:
   accessModes:
   - ReadWriteOnce
