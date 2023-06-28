@@ -1,3 +1,26 @@
+# Info
+
+## Settings
+
+### Cloud Storage
+
+File Filter Regex
+`Vegetable Images/test/.*(jpe?g|png)`
+
+S3 Endpoint
+`http://minio:9000`
+
+Treat every bucket object as a source file
+`true`
+
+Recursive scan
+`true`
+
+### Labeling Interface
+
+Code
+
+```
 <View>
   <Image name="image" value="$image"/>
   <Choices name="choice" toName="image">
@@ -18,3 +41,14 @@
     <Choice value="Tomato"/>
   </Choices>
 </View>
+```
+
+### Machine Learning
+
+Add Model
+
+URL
+`http://serving:8080`
+
+Use for interactive preannotations
+`true`

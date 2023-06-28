@@ -2,6 +2,8 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   annotations:
+    app.openshift.io/vcs-ref: main
+    app.openshift.io/vcs-uri: https://github.com/redhat-na-ssa/demo-ocp-label-studio.git
     image.openshift.io/triggers: '[{"from":{"kind":"ImageStreamTag","name":"postgresql:12","namespace":"openshift"},"fieldPath":"spec.template.spec.containers[?(@.name==\"postgresql\")].image","pause":"true"}]'
     template.alpha.openshift.io/wait-for-ready: "true"
   labels:

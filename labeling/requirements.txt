@@ -1,2 +1,4 @@
-psycopg2-binary
 label-studio
+psycopg2-binary
+pip>=21.3.*
+setuptools>=60.0.*
