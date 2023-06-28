@@ -1,0 +1,52 @@
+apiVersion: triggers.tekton.dev/v1alpha1
+kind: TriggerTemplate
+metadata:
+  name: trigger-template-labeling
+spec:
+  params:
+    - name: git-revision
+    - name: git-commit-message
+    - name: git-repo-url
+    - name: git-repo-name
+    - name: content-type
+    - name: pusher-name
+  resourcetemplates:
+    - apiVersion: tekton.dev/v1beta1
+      kind: PipelineRun
+      metadata:
+        generateName: labeling-
+        labels:
+          app.kubernetes.io/instance: labeling
+          app.kubernetes.io/name: labeling
+          operator.tekton.dev/operand-name: openshift-pipelines-addons
+          pipeline.openshift.io/strategy: docker
+          pipeline.openshift.io/type: kubernetes
+          tekton.dev/pipeline: labeling
+      spec:
+        params:
+          - name: APP_NAME
+            value: labeling
+          - name: GIT_REPO
+            value: 'https://github.com/redhat-na-ssa/demo-active-learning.git'
+          - name: GIT_REVISION
+            value: openshift
+          - name: IMAGE_NAME
+            value: >-
+              image-registry.openshift-image-registry.svc:5000/demo-active-learn/labeling
+          - name: PATH_CONTEXT
+            value: serving
+        pipelineRef:
+          name: labeling
+        resources: []
+        workspaces:
+          - name: workspace
+            volumeClaimTemplate:
+              metadata:
+                labels:
+                  tekton.dev/pipeline: labeling
+              spec:
+                accessModes:
+                  - ReadWriteOnce
+                resources:
+                  requests:
+                    storage: 1Gi

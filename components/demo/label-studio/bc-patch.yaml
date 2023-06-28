@@ -1,0 +1,37 @@
+apiVersion: build.openshift.io/v1
+kind: BuildConfig
+metadata:
+  name: label-studio-patch
+  annotations:
+    app.openshift.io/vcs-ref: main
+    app.openshift.io/vcs-uri: https://github.com/redhat-na-ssa/demo-ocp-label-studio.git
+  labels:
+    app: label-studio
+    app.kubernetes.io/component: label-studio
+    app.kubernetes.io/instance: label-studio
+    app.kubernetes.io/name: label-studio
+    app.kubernetes.io/part-of: label-studio
+    app.openshift.io/runtime: python
+    app.openshift.io/runtime-version: 3.9-ubi8
+spec:
+  output:
+    to:
+      kind: ImageStreamTag
+      name: label-studio:ubi_patched
+  runPolicy: SerialLatestOnly
+  source:
+    contextDir: /container/patch
+    git:
+      ref: main
+      uri: https://github.com/redhat-na-ssa/demo-ocp-label-studio.git
+    type: Git
+  strategy:
+    dockerStrategy:
+      from:
+        kind: ImageStreamTag
+        name: label-studio:ubi_latest
+    type: Docker
+  triggers:
+  - imageChange: {}
+    type: ImageChange
+  - type: ConfigChange

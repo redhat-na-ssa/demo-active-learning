@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  annotations:
+    openshift.io/description: ""
+    openshift.io/display-name: Active Learning Demo
+  labels:
+    opendatahub.io/dashboard: "true"
+  name: demo-active-learn
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+  volumeMode: Filesystem
+  

@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: demo-active-learn
+  annotations:
+    openshift.io/description: |
+      A demo of Label Studio for Active Learning Loop on OpenShift
+    openshift.io/display-name: Active Learning Demo
+  labels:
+    opendatahub.io/dashboard: 'true'
+    

@@ -1,9 +1,0 @@
-# https://developer.apple.com/metal/tensorflow-plugin/
-tensorflow~=2.12.0; sys_platform != 'darwin'
-tensorflow-macos~=2.12.0; sys_platform == 'darwin'
-tensorflow-metal~=0.8.0; sys_platform == 'darwin'
-
-pandas
-seaborn
-matplotlib
-scikit-learn

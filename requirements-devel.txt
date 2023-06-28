@@ -3,6 +3,7 @@
 -r serving/requirements.txt
 -r training/requirements.txt
 
+podman-compose
 ipykernel
 black[jupyter]
 # jupyterlab

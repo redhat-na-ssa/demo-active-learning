@@ -12,8 +12,8 @@ from label_studio_ml.utils import get_image_local_path, get_single_tag_keys, get
 
 logger = logging.getLogger(__name__)
 
-class ActiveVegetableClassifier(LabelStudioMLBase):
 
+class ActiveVegetableClassifier(LabelStudioMLBase):
     def __init__(self, trainable=False, batch_size=32, epochs=3, **kwargs):
         super(ActiveVegetableClassifier, self).__init__(**kwargs)
 
@@ -24,8 +24,8 @@ class ActiveVegetableClassifier(LabelStudioMLBase):
 
         from_name, schema = list(self.parsed_label_config.items())[0]
         self.from_name = from_name
-        self.to_name = schema['to_name'][0]
-        self.labels = schema['labels']
+        self.to_name = schema["to_name"][0]
+        self.labels = schema["labels"]
 
         (
             self.from_name,
@@ -57,7 +57,7 @@ class ActiveVegetableClassifier(LabelStudioMLBase):
             13: "Radish",
             14: "Tomato",
         }
-        
+
         if self.train_output:
             model_file = self.train_output["model_file"]
             logger.info("Restore model from " + model_file)
@@ -82,13 +82,16 @@ class ActiveVegetableClassifier(LabelStudioMLBase):
 
         predictions = []
         # Get annotation tag first, and extract from_name/to_name keys from the labeling config to make predictions
-        
+
         for task in tasks:
             print(task)
-            url=task["data"]["image"]
+            url = task["data"]["image"]
             print(url)
-            image_dir=os.getenv("IMAGE_UPLOADED_DIR","/Users/arunhariharan/Library/Application Support/label-studio/media/upload")
-            image_path = get_image_local_path(url,None,None,image_dir)
+            image_dir = os.getenv(
+                "IMAGE_UPLOADED_DIR",
+                "/Users/arunhariharan/Library/Application Support/label-studio/media/upload",
+            )
+            image_path = get_image_local_path(url, None, None, image_dir)
             print(image_path)
             img_ = image.load_img(image_path, target_size=(224, 224))
             img_array = image.img_to_array(img_)
@@ -121,9 +124,12 @@ class ActiveVegetableClassifier(LabelStudioMLBase):
             print(f"Inside Training now")
             print(f"*******************")
             completion = kwargs
-            url=completion["data"]["task"]["data"]["image"]
-            image_dir=os.getenv("IMAGE_UPLOADED_DIR","/Users/arunhariharan/Library/Application Support/label-studio/media/upload")
-            image_path = get_image_local_path(url,None,None,image_dir)
+            url = completion["data"]["task"]["data"]["image"]
+            image_dir = os.getenv(
+                "IMAGE_UPLOADED_DIR",
+                "/Users/arunhariharan/Library/Application Support/label-studio/media/upload",
+            )
+            image_path = get_image_local_path(url, None, None, image_dir)
             image_label = completion["data"]["annotation"]["result"][0]["value"][
                 "choices"
             ][0]
