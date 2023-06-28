@@ -20,9 +20,9 @@ class VegetableClassifier(LabelStudioMLBase):
         
     def default(self, **kwargs):
         self.image_width, self.image_height = 224, 224
-        self.trainable = trainable
-        self.batch_size = batch_size
-        self.epochs = epochs
+        self.trainable = False
+        self.batch_size = 32
+        self.epochs = 3
 
         from_name, schema = list(self.parsed_label_config.items())[0]
         self.from_name = from_name
