@@ -71,7 +71,7 @@ class VegetableClassifier(LabelStudioMLBase):
         print(kwargs)
 
     def load_model_from_local_file(self):
-        path_to_model = os.environ.get("MODEL_PATH", "/data/models/model.h5")
+        path_to_model = os.environ.get("MODEL_PATH", "model.h5")
         print("Model: Loading...")
         model = load_model(path_to_model)
         print("Model: Loaded")
