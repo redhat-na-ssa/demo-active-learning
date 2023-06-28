@@ -15,7 +15,9 @@ logger = logging.getLogger(__name__)
 
 class VegetableClassifier(LabelStudioMLBase):
     def __init__(self, trainable=False, batch_size=32, epochs=3, **kwargs):
-        super(ActiveVegetableClassifier, self).__init__(**kwargs)
+        super(VegetableClassifier, self).__init__(**kwargs)
+
+        
 
         self.image_width, self.image_height = 224, 224
         self.trainable = trainable
