@@ -13,7 +13,7 @@ from label_studio_ml.utils import get_image_local_path, get_single_tag_keys, get
 logger = logging.getLogger(__name__)
 
 
-class ActiveVegetableClassifier(LabelStudioMLBase):
+class VegetableClassifier(LabelStudioMLBase):
     def __init__(self, trainable=False, batch_size=32, epochs=3, **kwargs):
         super(ActiveVegetableClassifier, self).__init__(**kwargs)
 

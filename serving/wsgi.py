@@ -24,9 +24,9 @@ logging.config.dictConfig(
 )
 
 from label_studio_ml.api import init_app
-from ActiveVegetableLearner import ActiveVegetableClassifier
+from ActiveLearner import VegetableClassifier
 
-application = init_app(model_class=ActiveVegetableClassifier)
+application = init_app(model_class=VegetableClassifier)
 
 _DEFAULT_CONFIG_PATH = os.path.join(os.path.dirname(__file__), "config.json")
 
@@ -114,11 +114,11 @@ if __name__ == "__main__":
         kwargs.update(parse_kwargs())
 
     if args.check:
-        print('Check "' + ActiveVegetableClassifier.__name__ + '" instance creation...')
-        model = ActiveVegetableClassifier(**kwargs)
+        print('Check "' + VegetableClassifier.__name__ + '" instance creation...')
+        model = VegetableClassifier(**kwargs)
 
     app = init_app(
-        model_class=ActiveVegetableClassifier,
+        model_class=VegetableClassifier,
         model_dir=os.environ.get("MODEL_DIR", args.model_dir),
         redis_queue=os.environ.get("RQ_QUEUE_NAME", "default"),
         redis_host=os.environ.get("REDIS_HOST", "localhost"),
@@ -131,7 +131,7 @@ if __name__ == "__main__":
 else:
     # for uWSGI use
     app = init_app(
-        model_class=ActiveVegetableClassifier,
+        model_class=VegetableClassifier,
         model_dir=os.environ.get("MODEL_DIR", os.path.dirname(__file__)),
         redis_queue=os.environ.get("RQ_QUEUE_NAME", "default"),
         redis_host=os.environ.get("REDIS_HOST", "localhost"),
