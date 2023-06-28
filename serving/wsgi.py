@@ -26,6 +26,7 @@ logging.config.dictConfig(
 from label_studio_ml.api import init_app
 from ActiveVegetableLearner import ActiveVegetableClassifier
 
+application = init_app(model_class=ActiveVegetableClassifier)
 
 _DEFAULT_CONFIG_PATH = os.path.join(os.path.dirname(__file__), "config.json")
 
