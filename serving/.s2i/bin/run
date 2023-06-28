@@ -14,12 +14,12 @@ run_sleep(){
 
 # run normal s2i scripts
 run_s2i_default(){
-  ${STI_SCRIPTS_PATH}/run
+  /usr/libexec/s2i/run
 }
 
 run_s2i_override(){
   # kludge - could change entrypoint
-  exec python _wsgi.py
+  exec python wsgi.py || return
 }
 
 usage
