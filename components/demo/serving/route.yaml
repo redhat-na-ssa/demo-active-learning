@@ -8,8 +8,6 @@ metadata:
     app.kubernetes.io/instance: serving
     app.kubernetes.io/name: serving
     app.kubernetes.io/part-of: active-learning
-    app.openshift.io/runtime: python
-    app.openshift.io/runtime-version: 3.9-ubi8
 spec:
   port:
     targetPort: 8080-tcp

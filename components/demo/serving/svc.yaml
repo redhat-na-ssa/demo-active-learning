@@ -3,7 +3,7 @@ kind: Service
 metadata:
   name: serving
   annotations:
-    app.openshift.io/vcs-ref: openshift
+    app.openshift.io/vcs-ref: main
     app.openshift.io/vcs-uri: https://github.com/redhat-na-ssa/demo-active-learning.git
   labels:
     app: serving
@@ -11,8 +11,6 @@ metadata:
     app.kubernetes.io/instance: serving
     app.kubernetes.io/name: serving
     app.kubernetes.io/part-of: active-learning
-    app.openshift.io/runtime: python
-    app.openshift.io/runtime-version: 3.9-ubi8
 spec:
   ports:
   - name: 8080-tcp

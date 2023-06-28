@@ -5,9 +5,9 @@ metadata:
   annotations:
     alpha.image.policy.openshift.io/resolve-names: '*'
     app.openshift.io/route-disabled: "false"
-    app.openshift.io/vcs-ref: openshift
+    app.openshift.io/vcs-ref: main
     app.openshift.io/vcs-uri: https://github.com/redhat-na-ssa/demo-active-learning.git
-    image.openshift.io/triggers: '[{"from":{"kind":"ImageStreamTag","name":"serving:latest","namespace":"demo-active-learn"},"fieldPath":"spec.template.spec.containers[?(@.name==\"serving\")].image","pause":"false"}]'
+    image.openshift.io/triggers: '[{"from":{"kind":"ImageStreamTag","name":"serving:latest"},"fieldPath":"spec.template.spec.containers[?(@.name==\"serving\")].image","pause":"false"}]'
   labels:
     app: serving
     app.kubernetes.io/component: serving
@@ -30,7 +30,7 @@ spec:
         deployment: serving
     spec:
       containers:
-      - image: image-registry.openshift-image-registry.svc:5000/demo-active-learn/serving:latest
+      - image: serving:latest
         name: serving
         ports:
         - containerPort: 8080
