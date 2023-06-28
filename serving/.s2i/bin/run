@@ -19,7 +19,7 @@ run_s2i_default(){
 
 run_s2i_override(){
   # kludge - could change entrypoint
-  python _wsgi.py || return
+  python _wsgi.py -d || return
 }
 
 usage
