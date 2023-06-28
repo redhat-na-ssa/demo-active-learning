@@ -2,7 +2,6 @@ apiVersion: kubeflow.org/v1
 kind: Notebook
 metadata:
   annotations:
-    notebooks.kubeflow.org/last-activity: "2023-06-23T16:49:32Z"
     notebooks.opendatahub.io/inject-oauth: "true"
     notebooks.opendatahub.io/last-image-selection: tensorflow:2023.1
     notebooks.opendatahub.io/last-size-selection: Demo / Workshop
@@ -16,7 +15,6 @@ metadata:
     opendatahub.io/odh-managed: "true"
     opendatahub.io/user: a-team
   name: active-learning
-  namespace: demo-active-learn
 spec:
   template:
     spec:
