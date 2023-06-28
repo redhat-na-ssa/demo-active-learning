@@ -3,5 +3,3 @@ kind: Kustomization
 
 resources:
 - notebook.yaml
-- pvc.yaml
-- secret.yaml
