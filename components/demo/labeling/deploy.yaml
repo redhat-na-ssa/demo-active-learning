@@ -22,7 +22,7 @@ spec:
     matchLabels:
       app: labeling
   strategy:
-    type: RollingUpdate
+    type: Recreate
   template:
     metadata:
       labels:
@@ -36,3 +36,14 @@ spec:
         - containerPort: 8080
           protocol: TCP
         resources: {}
+        volumeMounts:
+        - name: label-studio-data
+          mountPath: /opt/app-root/src
+      volumes:
+        - name: empty
+          emptyDir: {}
+        - name: label-studio-data
+          persistentVolumeClaim:
+            claimName: label-studio-data
+          
+
