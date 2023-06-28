@@ -3,7 +3,7 @@
 
 # dump
 #dump/
-scratch
+scratch/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
