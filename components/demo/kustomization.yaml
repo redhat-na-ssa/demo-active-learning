@@ -5,7 +5,7 @@ namespace: demo-active-learn
 
 resources:
 - datasci-project
-- labeling
+- label-studio
 - minio
 # - notebook
 - pipelines

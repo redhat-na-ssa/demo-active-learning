@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    template.openshift.io/expose-uri: postgres://{.spec.clusterIP}:{.spec.ports[?(.name=="postgresql")].port}
+  labels:
+    app: label-studio
+    app.kubernetes.io/component: label-studio
+    app.kubernetes.io/instance: label-studio-db
+    app.kubernetes.io/name: label-studio-db
+    app.kubernetes.io/part-of: label-studio
+    template: postgresql-persistent-template
+  name: label-studio-db
+spec:
+  ports:
+  - name: postgresql
+    port: 5432
+    protocol: TCP
+    targetPort: 5432
+  selector:
+    name: label-studio-db
