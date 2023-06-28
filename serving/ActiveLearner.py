@@ -16,6 +16,7 @@ class VegetableClassifier(LabelStudioMLBase):
     def __init__(self, **kwargs):
         super(VegetableClassifier, self).__init__(**kwargs)
 
+        print(kwargs)
         
     def default(self, **kwargs):
         self.image_width, self.image_height = 224, 224
