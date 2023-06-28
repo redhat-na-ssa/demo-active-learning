@@ -1,5 +1,5 @@
 #!/bin/sh
-set -e
+# set -e
 
 usage(){
   "${STI_SCRIPTS_PATH}/usage"
