@@ -33,14 +33,6 @@ spec:
         namespace: openshift
     type: Source
   triggers:
-  - generic:
-      secretReference:
-        name: serving-generic-webhook-secret
-    type: Generic
-  - github:
-      secretReference:
-        name: serving-github-webhook-secret
-    type: GitHub
   - imageChange: {}
     type: ImageChange
   - type: ConfigChange
