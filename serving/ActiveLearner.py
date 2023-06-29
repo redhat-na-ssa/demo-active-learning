@@ -10,6 +10,8 @@ from PIL import Image
 from label_studio_ml.model import LabelStudioMLBase
 from label_studio_ml.utils import get_image_local_path, get_single_tag_keys, get_choice
 
+from s3 import S3Images
+
 logger = logging.getLogger(__name__)
 
 
@@ -20,43 +22,18 @@ class VegetableClassifier(LabelStudioMLBase):
         self.image_width, self.image_height = 224, 224
 
         print(kwargs)
-        print(self.label_config)
-
-        self.category = {
-            0: "Bean",
-            1: "Bitter_Gourd",
-            2: "Bottle_Gourd",
-            3: "Brinjal",
-            4: "Broccoli",
-            5: "Cabbage",
-            6: "Capsicum",
-            7: "Carrot",
-            8: "Cauliflower",
-            9: "Cucumber",
-            10: "Papaya",
-            11: "Potato",
-            12: "Pumpkin",
-            13: "Radish",
-            14: "Tomato",
-        }
-        
-    def default(self, **kwargs):
-
-        self.trainable = False
-        self.batch_size = 32
-        self.epochs = 3
+        print(self.parsed_label_config)
 
         from_name, schema = list(self.parsed_label_config.items())[0]
         self.from_name = from_name
         self.to_name = schema["to_name"][0]
         self.labels = schema["labels"]
 
-        (
-            self.from_name,
-            self.to_name,
-            self.value,
-            self.labels_in_config,
-        ) = get_single_tag_keys(self.parsed_label_config, "Choices", "Image")
+    def default(self, **kwargs):
+
+        self.trainable = False
+        self.batch_size = 32
+        self.epochs = 3
 
         print(self.labels_in_config)
         self.labels = tf.convert_to_tensor(sorted(self.labels_in_config))
@@ -96,8 +73,15 @@ class VegetableClassifier(LabelStudioMLBase):
             url = task["data"]["image"]
             print(url)
             
+            access_key = os.getenv("AWS_ACCESS_KEY_ID", "minioadmin")
+            secret_key = os.getenv("AWS_SECRET_ACCESS_KEY", "minioadmin")
+            s3_endpoint = os.getenv("AWS_S3_ENDPOINT", "minio:9000").lstrip("http://")
+            bucket_name = os.getenv("AWS_S3_BUCKET", "data")
 
-            image = Image.open("0001.jpg").resize((self.image_width, self.image_height))
+            s3_image = S3Images(s3_endpoint, access_key, secret_key, secure=False)
+            image = s3_image.from_s3(bucket_name, 'Vegetable Images/test/Bean/0001.jpg' )
+
+            image = image.resize((self.image_width, self.image_height))
             image = np.array(image) / 255.0
             result = self.model.predict(image[np.newaxis, ...])
             predicted_label_idx = np.argmax(result[0], axis=-1)
@@ -114,12 +98,13 @@ class VegetableClassifier(LabelStudioMLBase):
                             "from_name": self.from_name,
                             "to_name": self.to_name,
                             "type": "choices",
-                            "value": {"choices": [str(predicted_label.numpy(), 'utf-8')]}
+                            "value": {"choices": [predicted_label]}
                         }
                     ],
                     "score": float(predicted_label_score)
                 }
             )
+        print(predictions[0])
         return predictions
 
     def fit(self, tasks, workdir=None, **kwargs):

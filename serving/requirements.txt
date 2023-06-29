@@ -4,6 +4,7 @@ numpy<1.24,>=1.22
 # psycopg2-binary
 pillow
 rq
+minio
 
 # https://developer.apple.com/metal/tensorflow-plugin/
 tensorflow~=2.12.0; sys_platform != 'darwin'
