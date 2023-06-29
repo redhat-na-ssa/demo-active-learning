@@ -64,11 +64,10 @@ class VegetableClassifier(LabelStudioMLBase):
         if self.train_output:
             model_file = self.train_output["model_file"]
             logger.info("Restore model from " + model_file)
-            # Restore previously saved weights
+            
+            # restore previously saved weights
             self.labels = self.train_output["labels"]
             self.model.load_weights(self.train_output["model_file"])
-
-        print(kwargs)
 
     def load_model_from_local_file(self):
         path_to_model = os.environ.get("MODEL_PATH", "model.h5")
