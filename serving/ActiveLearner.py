@@ -30,7 +30,6 @@ class VegetableClassifier(LabelStudioMLBase):
         self.labels = schema["labels"]
 
     def default(self, **kwargs):
-
         self.trainable = False
         self.batch_size = 32
         self.epochs = 3
@@ -44,7 +43,7 @@ class VegetableClassifier(LabelStudioMLBase):
         if self.train_output:
             model_file = self.train_output["model_file"]
             logger.info("Restore model from " + model_file)
-            
+
             # restore previously saved weights
             self.labels = self.train_output["labels"]
             self.model.load_weights(self.train_output["model_file"])
@@ -69,10 +68,10 @@ class VegetableClassifier(LabelStudioMLBase):
 
         for task in tasks:
             print(task)
-            
+
             url = task["data"]["image"]
             print(url)
-            
+
             access_key = os.getenv("AWS_ACCESS_KEY_ID", "minioadmin")
             secret_key = os.getenv("AWS_SECRET_ACCESS_KEY", "minioadmin")
             s3_endpoint = os.getenv("AWS_S3_ENDPOINT", "minio:9000").lstrip("http://")
@@ -100,10 +99,10 @@ class VegetableClassifier(LabelStudioMLBase):
                             "from_name": self.from_name,
                             "to_name": self.to_name,
                             "type": "choices",
-                            "value": {"choices": [predicted_label]}
+                            "value": {"choices": [predicted_label]},
                         }
                     ],
-                    "score": float(predicted_label_score)
+                    "score": float(predicted_label_score),
                 }
             )
         print(predictions[0])
