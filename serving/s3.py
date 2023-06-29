@@ -29,8 +29,8 @@ class S3Images(object):
                         secret_key=secret_key,
                         secure=secure)
 
-    def from_s3(self, bucket, key):
-        file_byte_string = self.s3.get_object(Bucket=bucket, Key=key)['Body'].read()
+    def from_s3(self, bucket_name, object_name):
+        file_byte_string = self.s3.get_object(bucket_name, object_name).data
         return Image.open(BytesIO(file_byte_string))
     
 

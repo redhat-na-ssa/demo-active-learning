@@ -78,8 +78,10 @@ class VegetableClassifier(LabelStudioMLBase):
             s3_endpoint = os.getenv("AWS_S3_ENDPOINT", "minio:9000").lstrip("http://")
             bucket_name = os.getenv("AWS_S3_BUCKET", "data")
 
+            remote_file = url.lstrip("s3://" + bucket_name)
+
             s3_image = S3Images(s3_endpoint, access_key, secret_key, secure=False)
-            image = s3_image.from_s3(bucket_name, 'Vegetable Images/test/Bean/0001.jpg' )
+            image = s3_image.from_s3(bucket_name, remote_file)
 
             image = image.resize((self.image_width, self.image_height))
             image = np.array(image) / 255.0
