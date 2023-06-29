@@ -97,7 +97,7 @@ class VegetableClassifier(LabelStudioMLBase):
             print(url)
             
 
-            image = Image.open("0001.jpg", target_size=(self.image_width, self.image_height))
+            image = Image.open("0001.jpg").resize((self.image_width, self.image_height))
             image = np.array(image) / 255.0
             result = self.model.predict(image[np.newaxis, ...])
             predicted_label_idx = np.argmax(result[0], axis=-1)
