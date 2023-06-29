@@ -1,9 +1,13 @@
+elyra[all]
+elyra[kfp-tekton]
+elyra[gitlab]
 kaggle
 matplotlib
 minio
 pandas
 seaborn
-# scikit-learn
+scikit-learn
+scikit-image
 
 # https://developer.apple.com/metal/tensorflow-plugin
 tensorflow-macos~=2.12.0; sys_platform == 'darwin'
