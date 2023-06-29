@@ -1,8 +1,8 @@
 gunicorn
 label-studio-ml
 numpy<1.24,>=1.22
-# google-auth==2.11.0
 # psycopg2-binary
+pillow
 rq
 
 # https://developer.apple.com/metal/tensorflow-plugin/

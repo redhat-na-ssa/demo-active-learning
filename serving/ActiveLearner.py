@@ -6,6 +6,7 @@ from tensorflow.keras.models import load_model
 from tensorflow.keras.preprocessing import image
 import numpy as np
 
+from PIL import Image
 from label_studio_ml.model import LabelStudioMLBase
 from label_studio_ml.utils import get_image_local_path, get_single_tag_keys, get_choice
 
@@ -16,11 +17,31 @@ class VegetableClassifier(LabelStudioMLBase):
     def __init__(self, **kwargs):
         super(VegetableClassifier, self).__init__(**kwargs)
 
+        self.image_width, self.image_height = 224, 224
+
         print(kwargs)
         print(self.label_config)
+
+        self.category = {
+            0: "Bean",
+            1: "Bitter_Gourd",
+            2: "Bottle_Gourd",
+            3: "Brinjal",
+            4: "Broccoli",
+            5: "Cabbage",
+            6: "Capsicum",
+            7: "Carrot",
+            8: "Cauliflower",
+            9: "Cucumber",
+            10: "Papaya",
+            11: "Potato",
+            12: "Pumpkin",
+            13: "Radish",
+            14: "Tomato",
+        }
         
     def default(self, **kwargs):
-        self.image_width, self.image_height = 224, 224
+
         self.trainable = False
         self.batch_size = 32
         self.epochs = 3
@@ -43,24 +64,6 @@ class VegetableClassifier(LabelStudioMLBase):
         num_classes = len(self.labels_in_config)
         self.model = self.load_model_from_local_file()
 
-        self.category = {
-            0: "Bean",
-            1: "Bitter_Gourd",
-            2: "Bottle_Gourd",
-            3: "Brinjal",
-            4: "Broccoli",
-            5: "Cabbage",
-            6: "Capsicum",
-            7: "Carrot",
-            8: "Cauliflower",
-            9: "Cucumber",
-            10: "Papaya",
-            11: "Potato",
-            12: "Pumpkin",
-            13: "Radish",
-            14: "Tomato",
-        }
-
         if self.train_output:
             model_file = self.train_output["model_file"]
             logger.info("Restore model from " + model_file)
@@ -70,7 +73,7 @@ class VegetableClassifier(LabelStudioMLBase):
             self.model.load_weights(self.train_output["model_file"])
 
     def load_model_from_local_file(self):
-        path_to_model = os.environ.get("MODEL_PATH", "model.h5")
+        path_to_model = os.environ.get("MODEL_PATH", "model_inceptionV3_epoch5.h5")
         print("Model: Loading...")
         model = load_model(path_to_model)
         print("Model: Loaded")
@@ -85,24 +88,24 @@ class VegetableClassifier(LabelStudioMLBase):
         predictions = []
         # Get annotation tag first, and extract from_name/to_name keys from the labeling config to make predictions
 
+        print(kwargs)
+
         for task in tasks:
             print(task)
+            
             url = task["data"]["image"]
             print(url)
-            image_dir = os.getenv(
-                "IMAGE_UPLOADED_DIR",
-                "/Users/arunhariharan/Library/Application Support/label-studio/media/upload",
-            )
-            image_path = get_image_local_path(url, None, None, image_dir)
-            print(image_path)
-            img_ = image.load_img(image_path, target_size=(224, 224))
-            img_array = image.img_to_array(img_)
-            img_processed = np.expand_dims(img_array, axis=0)
-            img_processed /= 255.0
-            prediction = self.model.predict(img_processed)
-            index = np.argmax(prediction)
-            predicted_value = self.category[index]
-            print(predicted_value)
+            
+
+            image = Image.open("0001.jpg", target_size=(self.image_width, self.image_height))
+            image = np.array(image) / 255.0
+            result = self.model.predict(image[np.newaxis, ...])
+            predicted_label_idx = np.argmax(result[0], axis=-1)
+            predicted_label_score = result[0][predicted_label_idx]
+            predicted_label = self.labels[predicted_label_idx]
+
+            print(predicted_label)
+
             # for each task, return classification results in the form of "choices" pre-annotations
             predictions.append(
                 {
@@ -111,10 +114,10 @@ class VegetableClassifier(LabelStudioMLBase):
                             "from_name": self.from_name,
                             "to_name": self.to_name,
                             "type": "choices",
-                            "value": {"choices": [predicted_value]},
+                            "value": {"choices": [str(predicted_label.numpy(), 'utf-8')]}
                         }
                     ],
-                    "score": float(1),
+                    "score": float(predicted_label_score)
                 }
             )
         return predictions
