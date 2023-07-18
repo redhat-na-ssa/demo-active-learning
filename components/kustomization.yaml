@@ -3,5 +3,4 @@ kind: Kustomization
 
 resources:
 - demo
-- openshift-pipelines-operator/overlays/latest
-- rhods-operator/operator/overlays/stable
+- operators
